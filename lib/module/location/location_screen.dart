@@ -21,7 +21,7 @@ class LocationScreen extends GetView<LocationController> {
             children: [
               Container(height: ScreenUtil().statusBarHeight, color: Colors.white,),
               Container(
-                height: 44,
+                height: 44.h,
                 color: Colors.white,
                 child: Row(
                   children: [
@@ -40,25 +40,20 @@ class LocationScreen extends GetView<LocationController> {
                             borderRadius: BorderRadius.circular(4.r),
                             color: hexToColor("#F5F5F5")
                         ),
-                        child: Align(
-                          alignment: Alignment.centerLeft,
-                          child: TextField(
-                            controller: controller.textEditingController,
-                            // showCursor: false,
-                            style: TextStyle(
-                              fontSize: 14.sp,
-                            ),
-                            decoration: InputDecoration(
-                              hintText: "搜索城市/县区",
-                              hintStyle: TextStyle(
-                                  fontSize: 14.sp,
-                                  color: hexToColor("#999999")),
-                              border: InputBorder.none,
-                              contentPadding: EdgeInsets.only(
-                                  left: 15.w,
-                                  bottom: 8.h,
-                                  right: 15.w),
-                            ),
+                        alignment: Alignment.centerLeft,
+                        child: TextField(
+                          controller: controller.textEditingController,
+                          // showCursor: false,
+                          style: TextStyle(
+                            fontSize: 14.sp,
+                          ),
+                          decoration: InputDecoration(
+                            hintText: "搜索城市/县区",
+                            hintStyle: TextStyle(
+                                fontSize: 14.sp,
+                                color: hexToColor("#999999")),
+                            border: InputBorder.none,
+                            contentPadding: const EdgeInsets.only(left: 15, right: 15, bottom: 12)
                           ),
                         ),
                       ),

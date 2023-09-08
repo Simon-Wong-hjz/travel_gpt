@@ -1,7 +1,6 @@
 import 'dart:io';
-import 'dart:typed_data';
 import 'dart:ui' as ui;
-import 'dart:html' as html;
+import "package:universal_html/html.dart" as html;
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -10,6 +9,8 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:travel_gpt/obj/travel_info.dart';
+import 'package:image_gallery_saver/image_gallery_saver.dart';
+
 
 class TravelController extends GetxController {
   late TravelInfo travelInfo;
@@ -73,11 +74,18 @@ class TravelController extends GetxController {
       // 释放资源
       html.Url.revokeObjectUrl(url);
     } else {
-      final Directory tempDir = await getTemporaryDirectory();
-      var path = "${tempDir.path}/${DateTime.now().millisecondsSinceEpoch}.png";
-      File(path).writeAsBytesSync(buffer);
+      // 保存图片到相册
+      final result = await ImageGallerySaver.saveImage(Uint8List.fromList(buffer), name: '${DateTime.now().millisecondsSinceEpoch}.png');
+
+      if (result != null) {
+        // 图片保存成功
+        EasyLoading.showSuccess("保存成功");
+      } else {
+        // 图片保存失败
+        EasyLoading.showError("保存失败");
+      }
     }
 
-    EasyLoading.showSuccess("保存成功");
+
   }
 }
