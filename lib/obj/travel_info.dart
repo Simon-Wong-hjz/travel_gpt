@@ -128,7 +128,7 @@ class TravelDayPlay {
     return TravelDayPlay(
       play: json['play'],
       playTime: json['playTime'],
-      playMoney: json['playMoney'],
+      playMoney: json['playMoney'] is double ? (json['playMoney'] as double).toInt() : json['playMoney'],
     );
   }
 }

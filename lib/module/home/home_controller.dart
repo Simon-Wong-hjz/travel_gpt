@@ -95,74 +95,46 @@ class HomeController extends GetxController {
       return;
     }
     travelInfo.keys = selectKey.map((e) => e.name).toList();
-    travelInfo.travelDestination = TravelDestination(
-      destination: "上海",
-      destinationDescription:
-          "上海是一个有着悠久历史的城市，有着丰富的旅游资源，有着独特的城市风貌，有着浓郁的城市文化，有着丰富的旅游资源，有着独特的城市风貌，有着浓郁的城市文化，有着丰富的旅游资源，有着独特的城市风貌，有着浓郁的城市文化，有着丰富的旅游资源，有着独特的城市风貌，有着浓郁的城市文化，有着丰富的旅游资源，有着独特的城市风貌，有着浓郁的城市文化",
-      dayList: [
-        TravelDay(
-          day: "第一天",
-          playList: [
-            TravelDayPlay(
-              play: "上海迪士尼",
-              playTime: "08:00-12:00",
-              playMoney: 500,
-            ),
-            TravelDayPlay(
-              play: "外滩",
-              playTime: "12:00-18:00",
-              playMoney: 0,
-            ),
-            TravelDayPlay(
-              play: "南京路步行街",
-              playTime: "18:00",
-              playMoney: 0,
-            ),
-          ],
-        ),
-        TravelDay(
-          day: "第二天",
-          playList: [
-            TravelDayPlay(
-              play: "上海迪 士尼",
-              playTime: "08:00-12:00",
-              playMoney: 500,
-            ),
-            TravelDayPlay(
-              play: "外滩",
-              playTime: "12:00-18:00",
-              playMoney: 0,
-            ),
-            TravelDayPlay(
-              play: "南京路步行街",
-              playTime: "18:00",
-              playMoney: 0,
-            ),
-          ],
-        ),
-        TravelDay(
-          day: "第三天",
-          playList: [
-            TravelDayPlay(
-              play: "上海迪士尼",
-              playTime: "08:00-12:00",
-              playMoney: 500,
-            ),
-            TravelDayPlay(
-              play: "外滩",
-              playTime: "12:00-18:00",
-              playMoney: 0,
-            ),
-            TravelDayPlay(
-              play: "南京路步行街",
-              playTime: "18:00",
-              playMoney: 0,
-            ),
-          ],
-        ),
-      ],
-    );
     travelInfo.createTime = formatDate(DateTime.now(), [yyyy, '-', mm, '-', dd]);
+    EasyLoading.show(status: "内容生成中...", maskType: EasyLoadingMaskType.black, dismissOnTap: false);
+    var body = {
+      "departure": travelInfo.location,
+      "startDate": travelInfo.goTime,
+      "endDate": travelInfo.backTime,
+      "travellerCount": travelInfo.people,
+      "budget": travelInfo.money,
+      "keywords": travelInfo.keys
+    };
+    var request = http.Request('POST', Uri.parse('https://travelgpt.azurewebsites.net/generatePlan?isWeb=false'));
+    request.body = jsonEncode(body);
+    var headers = {
+      'Content-Type': 'application/json'
+    };
+    request.headers.addAll(headers);
+    late http.StreamedResponse response;
+    try {
+      response = await request.send();
+    } catch (e) {
+      Log.e(e);
+      EasyLoading.showError("发送失败，再试一次吧");
+      return;
+    }
+    Log.i(response.statusCode);
+    EasyLoading.dismiss();
+    var responseBody = await response.stream.bytesToString();
+    Log.i(responseBody);
+    if (response.statusCode == 200) {
+      try {
+        travelInfo.travelDestination = TravelDestination.fromJson(jsonDecode(responseBody));
+      } catch(e) {
+        Log.e(e);
+        EasyLoading.showError("解析失败，再试一次吧");
+        return;
+      }
+    } else {
+      EasyLoading.showError("请求失败，再试一次吧");
+      return;
+    }
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     var values = prefs.getStringList("travelInfoList");
     if (values != null) {
@@ -174,13 +146,6 @@ class HomeController extends GetxController {
     selectKey.clear();
     update(["keyInput"]);
     Get.toNamed(Routes.travel, arguments: travelInfo);
-
-    // var response = await http.post(Uri.parse("http://localhost:8080/travel"), body: travelInfo.toJson());
-    // if (response.statusCode == 200) {
-    //   Log.i(response.body);
-    // } else {
-    //   Log.e(response.body);
-    // }
   }
 
   void showDatePicker() {

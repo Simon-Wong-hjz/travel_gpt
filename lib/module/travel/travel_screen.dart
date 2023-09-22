@@ -228,20 +228,59 @@ class TravelScreen extends GetView<TravelController> {
                 margin: EdgeInsets.only(left: 15.w, right: 15.w),
                 child: Row(
                   children: [
-                    Text(
-                      "旅行计划",
-                      style: TextStyle(
-                          fontSize: 16.sp,
-                          color: hexToColor("#2F3337"),
-                          fontWeight: FontWeight.bold),
+                    GestureDetector(
+                      child: GetBuilder<TravelController>(
+                        id: "showTable",
+                        builder: (controller) {
+                          return controller.showTable
+                              ?
+                          Text(
+                            "旅行计划",
+                            style: TextStyle(
+                                fontSize: 14.sp, color: hexToColor("#9199A1")),
+                          )
+                              :
+                          Text(
+                            "旅行计划",
+                            style: TextStyle(
+                                fontSize: 16.sp,
+                                color: hexToColor("#2F3337"),
+                                fontWeight: FontWeight.bold),
+                          );
+                        },
+                      ),
+                      onTap: () {
+                        controller.changeShowTable(false);
+                      },
                     ),
                     SizedBox(
                       width: 15.w,
                     ),
-                    Text(
-                      "费用明细",
-                      style:
-                      TextStyle(fontSize: 14.sp, color: hexToColor("#9199A1")),
+                    GestureDetector(
+                      child: GetBuilder<TravelController>(
+                        id: "showTable",
+                        builder: (controller) {
+                          return controller.showTable
+                              ?
+                          Text(
+                            "费用明细",
+                            style:
+                            TextStyle(
+                                fontSize: 16.sp,
+                                color: hexToColor("#2F3337"),
+                                fontWeight: FontWeight.bold),
+                          )
+                              :
+                          Text(
+                            "费用明细",
+                            style: TextStyle(
+                                fontSize: 14.sp, color: hexToColor("#9199A1")),
+                          );
+                        },
+                      ),
+                      onTap: () {
+                        controller.changeShowTable(true);
+                      },
                     ),
                   ],
                 ),
@@ -249,155 +288,7 @@ class TravelScreen extends GetView<TravelController> {
               SizedBox(
                 height: 10.h,
               ),
-              GetBuilder<TravelController>(
-                  id: "list",
-                  builder: (controller) {
-                    int i = 0;
-                    return Container(
-                      margin: EdgeInsets.only(left: 15.w, right: 15.w),
-                      child: ExpansionPanelList(
-                        expandedHeaderPadding: EdgeInsets.zero,
-                        expandIconColor: Colors.transparent,
-                        materialGapSize: 10.h,
-                        elevation: 0,
-                        expansionCallback: (int index, bool isExpanded) {
-                          controller.changeExpansion(index);
-                        },
-                        children: controller.travelInfo.travelDestination!.dayList
-                            .map((e) {
-                          return ExpansionPanel(
-                            canTapOnHeader: true,
-                            headerBuilder: (BuildContext context, bool isExpanded) {
-                              i++;
-                              return ListTile(
-                                title: Row(
-                                  children: [
-                                    Expanded(
-                                      child: Text(
-                                        "第$i天",
-                                        style: TextStyle(
-                                            fontSize: 16.sp,
-                                            color: hexToColor("#16191C"),
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                    ),
-                                    Text(
-                                      "详情",
-                                      style: TextStyle(
-                                          fontSize: 12.sp,
-                                          color: hexToColor("#9199A1"),
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                    e.isExpanded
-                                        ? Image.asset(
-                                      "assets/展开.png",
-                                      color: hexToColor("#9199A1"),
-                                      height: 16.h,
-                                    )
-                                        : Image.asset(
-                                      "assets/收起.png",
-                                      color: hexToColor("#9199A1"),
-                                      height: 16.h,
-                                    ),
-                                  ],
-                                ),
-                                subtitle: Text(e.day,
-                                    style: TextStyle(
-                                      fontSize: 12.sp,
-                                      color: hexToColor("#9199A1"),
-                                    )),
-                              );
-                            },
-                            body: Column(children: [
-                              Column(
-                                children: e.playList.map((e) {
-                                  return Container(
-                                    margin:
-                                    EdgeInsets.only(left: 15.w, right: 15.w),
-                                    height: 28.h,
-                                    child: Row(
-                                      children: [
-                                        SizedBox(
-                                          width: 100,
-                                          child: Text(
-                                            e.playTime,
-                                            style: TextStyle(
-                                                fontSize: 14.sp,
-                                                overflow: TextOverflow.ellipsis,
-                                                color: hexToColor("#9199A1")),
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          width: 5.w,
-                                        ),
-                                        Text(
-                                          e.play,
-                                          style: TextStyle(
-                                              fontSize: 14.sp,
-                                              overflow: TextOverflow.ellipsis,
-                                              color: hexToColor("#2F3337")),
-                                        ),
-                                        SizedBox(
-                                          width: 5.w,
-                                        ),
-                                        Expanded(
-                                            child: Container(
-                                              alignment: Alignment.centerRight,
-                                              child: Text(
-                                                "￥${e.playMoney}",
-                                                style: TextStyle(
-                                                    fontSize: 14.sp,
-                                                    color: hexToColor("#2F3337")),
-                                              ),
-                                            )),
-                                      ],
-                                    ),
-                                  );
-                                }).toList(),
-                              ),
-                              SizedBox(
-                                height: 10.h,
-                              ),
-                              Container(
-                                margin: EdgeInsets.only(left: 15.w, right: 15.w),
-                                child: Divider(
-                                  height: 1,
-                                  color: hexToColor("#E3E6E8"),
-                                ),
-                              ),
-                              SizedBox(
-                                height: 10.h,
-                              ),
-                              Container(
-                                margin: EdgeInsets.only(left: 15.w, right: 15.w),
-                                child: Row(
-                                  children: [
-                                    Expanded(
-                                        child: Text(
-                                          "合计",
-                                          style: TextStyle(
-                                              fontSize: 14.sp,
-                                              color: hexToColor("#9199A1")),
-                                        )),
-                                    Text(
-                                      "￥${e.playList.fold(0, (previousValue, element) => previousValue + element.playMoney)}",
-                                      style: TextStyle(
-                                          fontSize: 14.sp,
-                                          color: hexToColor("#2F3337")),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              SizedBox(
-                                height: 10.h,
-                              ),
-                            ]),
-                            isExpanded: e.isExpanded,
-                          );
-                        }).toList(),
-                      ),
-                    );
-                  }),
+              showTable(),
               SizedBox(
                 height: 15.h,
               ),
@@ -416,4 +307,250 @@ class TravelScreen extends GetView<TravelController> {
       ),
     );
   }
+}
+
+Widget showTable() {
+  return GetBuilder<TravelController>(
+    id: "showTable",
+    builder: (controller) {
+      List<Widget> tables = [];
+      for (var element in controller.travelInfo.travelDestination!.dayList) {
+        for (var e in element.playList) {
+          tables.add(
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    Expanded(
+                        child: Text(
+                          e.play,
+                          style: TextStyle(
+                              fontSize: 14.sp,
+                              color: hexToColor("#2F3337")),
+                        )),
+                    Text(
+                      "￥${e.playMoney}",
+                      style: TextStyle(
+                          fontSize: 14.sp,
+                          color: hexToColor("#2F3337")),
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  height: 5.h,
+                ),
+                Text(
+                  "${element.day} ${e.playTime}",
+                  style: TextStyle(
+                      fontSize: 12.sp,
+                      color: hexToColor("#8D9399")),
+                ),
+              ],
+            )
+          );
+          tables.add(SizedBox(height: 5.h,));
+        }}
+      return controller.showTable
+          ? Card(
+        elevation: 0,
+        color: Colors.white,
+        margin: EdgeInsets.only(left: 15.w, right: 15.w),
+        child: Container(
+          margin: const EdgeInsets.all(15),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                "消费统计",
+                style: TextStyle(
+                    fontSize: 16.sp,
+                    color: hexToColor("#16191C"),
+                    fontWeight: FontWeight.bold),
+              ),
+              SizedBox(
+                height: 15.h,
+              ),
+              ...tables,
+              Divider(
+                height: 1,
+                color: hexToColor("#E3E6E8"),
+              ),
+              SizedBox(
+                height: 10.h,
+              ),
+              Row(
+                children: [
+                  Expanded(
+                      child: Text(
+                        "总计",
+                        style: TextStyle(
+                            fontSize: 14.sp,
+                            color: hexToColor("#9E9E9E")),
+                      )),
+                  Text(
+                    "￥${controller.travelInfo.travelDestination!.dayList.fold(0, (previousValue, element) => previousValue + element.playList.fold(0, (previousValue, element) => previousValue + element.playMoney))}",
+                    style: TextStyle(
+                        fontSize: 14.sp,
+                        color: hexToColor("#16191C"),
+                    fontWeight: FontWeight.bold),
+                  ),
+                ],
+              )
+            ],
+          ),
+        ),
+      )
+          : GetBuilder<TravelController>(
+          id: "list",
+          builder: (controller) {
+            int i = 0;
+            return Container(
+              margin: EdgeInsets.only(left: 15.w, right: 15.w),
+              child: ExpansionPanelList(
+                expandedHeaderPadding: EdgeInsets.zero,
+                expandIconColor: Colors.transparent,
+                materialGapSize: 10.h,
+                elevation: 0,
+                expansionCallback: (int index, bool isExpanded) {
+                  controller.changeExpansion(index);
+                },
+                children: controller.travelInfo.travelDestination!.dayList
+                    .map((e) {
+                  return ExpansionPanel(
+                    canTapOnHeader: true,
+                    headerBuilder: (BuildContext context, bool isExpanded) {
+                      i++;
+                      return ListTile(
+                        title: Row(
+                          children: [
+                            Expanded(
+                              child: Text(
+                                "第$i天",
+                                style: TextStyle(
+                                    fontSize: 16.sp,
+                                    color: hexToColor("#16191C"),
+                                    fontWeight: FontWeight.bold),
+                              ),
+                            ),
+                            Text(
+                              "详情",
+                              style: TextStyle(
+                                  fontSize: 12.sp,
+                                  color: hexToColor("#9199A1"),
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            e.isExpanded
+                                ? Image.asset(
+                              "assets/展开.png",
+                              color: hexToColor("#9199A1"),
+                              height: 16.h,
+                            )
+                                : Image.asset(
+                              "assets/收起.png",
+                              color: hexToColor("#9199A1"),
+                              height: 16.h,
+                            ),
+                          ],
+                        ),
+                        subtitle: Text(e.day,
+                            style: TextStyle(
+                              fontSize: 12.sp,
+                              color: hexToColor("#9199A1"),
+                            )),
+                      );
+                    },
+                    body: Column(children: [
+                      Column(
+                        children: e.playList.map((e) {
+                          return Container(
+                            margin:
+                            EdgeInsets.only(left: 15.w, right: 15.w),
+                            height: 28.h,
+                            child: Row(
+                              children: [
+                                SizedBox(
+                                  width: 100,
+                                  child: Text(
+                                    e.playTime,
+                                    style: TextStyle(
+                                        fontSize: 14.sp,
+                                        overflow: TextOverflow.ellipsis,
+                                        color: hexToColor("#9199A1")),
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: 5.w,
+                                ),
+                                Text(
+                                  e.play,
+                                  style: TextStyle(
+                                      fontSize: 14.sp,
+                                      overflow: TextOverflow.ellipsis,
+                                      color: hexToColor("#2F3337")),
+                                ),
+                                SizedBox(
+                                  width: 5.w,
+                                ),
+                                Expanded(
+                                    child: Container(
+                                      alignment: Alignment.centerRight,
+                                      child: Text(
+                                        "￥${e.playMoney}",
+                                        style: TextStyle(
+                                            fontSize: 14.sp,
+                                            color: hexToColor("#2F3337")),
+                                      ),
+                                    )),
+                              ],
+                            ),
+                          );
+                        }).toList(),
+                      ),
+                      SizedBox(
+                        height: 10.h,
+                      ),
+                      Container(
+                        margin: EdgeInsets.only(left: 15.w, right: 15.w),
+                        child: Divider(
+                          height: 1,
+                          color: hexToColor("#E3E6E8"),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 10.h,
+                      ),
+                      Container(
+                        margin: EdgeInsets.only(left: 15.w, right: 15.w),
+                        child: Row(
+                          children: [
+                            Expanded(
+                                child: Text(
+                                  "合计",
+                                  style: TextStyle(
+                                      fontSize: 14.sp,
+                                      color: hexToColor("#9199A1")),
+                                )),
+                            Text(
+                              "￥${e.playList.fold(0, (previousValue, element) => previousValue + element.playMoney)}",
+                              style: TextStyle(
+                                  fontSize: 14.sp,
+                                  color: hexToColor("#2F3337")),
+                            ),
+                          ],
+                        ),
+                      ),
+                      SizedBox(
+                        height: 10.h,
+                      ),
+                    ]),
+                    isExpanded: e.isExpanded,
+                  );
+                }).toList(),
+              ),
+            );
+          })
+      ;
+    },
+  );
 }

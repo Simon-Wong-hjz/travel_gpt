@@ -65,7 +65,8 @@ class HistoryScreen extends GetView<HistoryController> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(e.location!, style: TextStyle(fontSize: 16.sp, color: Colors.black, fontWeight: FontWeight.bold),),
+                Text("${e.location!} - ${e.travelDestination!.destination}", style: TextStyle(fontSize: 16.sp, color: Colors.black, fontWeight: FontWeight.bold),
+                overflow: TextOverflow.ellipsis,),
                 Image.asset("assets/详情.png", color: Colors.black, height: 16.h,),
               ],
             ),
