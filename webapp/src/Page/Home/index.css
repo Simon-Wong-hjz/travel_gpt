@@ -1,0 +1,103 @@
+.ant-input {
+  font-size: 20px !important;
+}
+
+:where(.css-dev-only-do-not-override-12jzuas).ant-picker .ant-picker-input >input:placeholder-shown {
+  font-size: 20px;
+}
+
+:where(.css-dev-only-do-not-override-12jzuas).ant-input-affix-wrapper .ant-input-prefix {
+  font-size: 20px;
+}
+
+:where(.css-dev-only-do-not-override-12jzuas).ant-picker-dropdown .ant-picker-header-view {
+  font-size: 20px;
+}
+
+:where(.css-dev-only-do-not-override-12jzuas).ant-picker .ant-picker-input >input {
+  font-size: 20px;
+}
+
+:where(.css-dev-only-do-not-override-12jzuas).ant-picker-dropdown .ant-picker-panel-container .ant-picker-panel .ant-picker-content, :where(.css-dev-only-do-not-override-12jzuas).ant-picker-dropdown .ant-picker-panel-container .ant-picker-panel table {
+  font-size: 20px;
+}
+
+:where(.css-dev-only-do-not-override-12jzuas).ant-input-affix-wrapper .ant-input-clear-icon{
+  font-size: 20px;
+}
+
+.Home {
+  width: 100%;
+  height: 100vh; 
+  background: rgb(34,193,195);
+  background: linear-gradient(0deg, rgba(34,193,195,1) 0%, rgba(253,187,45,1) 100%);
+}
+
+.home-wrapper {
+  width: 1030px;
+  margin: auto;
+}
+
+.header-wrapper {
+  display: flex;
+  justify-content: center;
+}
+
+.hader-input {
+  width: 200px;
+  margin-right: 50px;
+  height: 48px;
+}
+
+.header-time {
+  margin-right: 50px;
+}
+
+.header-time-range {
+  margin-right: 25px;
+  height: 48px;
+  font-size: 20px !important;
+}
+
+.search-wrapper {
+  display: flex;
+  justify-content: center;
+}
+
+.main-wrapper {
+  margin-top: 30px;
+}
+
+.title {
+  font-size: 120px;
+  color: #fff;
+  font-family: 'Dancing Script', 'Warnes', cursive;
+}
+
+.main-input {
+  width: 890px;
+  margin-right: 20px;
+  margin-left: -47px;
+}
+
+.confiim-button {
+  height: 56px;
+  width: 80px;
+  font-size: 20px;
+}
+
+.tag-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 10px 130px 0 0;
+  box-sizing: border-box;
+}
+
+.tag-item {
+  width: 90px;
+  height: 50px;
+  line-height: 50px;
+  text-align: center;
+  font-size: 20px;
+}
