@@ -1,0 +1,20 @@
+.plan {  
+  color: #fff;
+  font-weight: 800;
+  font-size: 18px;
+  background: rgb(34,193,195);
+  background: linear-gradient(0deg, rgba(34,193,195,1) 0%, rgba(253,187,45,1) 100%);
+  /* white-space: pre-line; */
+  overflow: hidden;
+  min-height: 100vh;
+}
+
+.plan-content {
+  width: 1030px;
+  margin: auto;
+}
+
+table {
+  text-align: center;
+  white-space: pre-line;
+}
