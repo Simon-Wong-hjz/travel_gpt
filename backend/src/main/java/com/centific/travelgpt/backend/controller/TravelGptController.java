@@ -4,10 +4,7 @@ import com.centific.travelgpt.backend.entity.TravelGptRequest;
 import com.centific.travelgpt.backend.service.TravelGptService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 
 /**
@@ -19,6 +16,7 @@ import reactor.core.publisher.Mono;
 @Slf4j
 @RequiredArgsConstructor
 @RestController
+@CrossOrigin(value = "*")
 public class TravelGptController {
 
     private final TravelGptService travelGptService;
