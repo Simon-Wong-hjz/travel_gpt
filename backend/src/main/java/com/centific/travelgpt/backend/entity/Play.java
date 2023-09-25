@@ -5,6 +5,6 @@ import lombok.Data;
 @Data
 public class Play {
     private String play;
-    private double playMoney;
+    private Double playMoney;
     private String playTime;
 }
