@@ -4,7 +4,7 @@ import lombok.Data;
 
 @Data
 public class Choice {
-    private int index;
+    private Integer index;
     private Message message;
     private String finishReason;
 }

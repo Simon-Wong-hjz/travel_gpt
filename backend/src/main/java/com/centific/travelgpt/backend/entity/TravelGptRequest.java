@@ -16,7 +16,7 @@ public class TravelGptRequest {
     public String departure;
     public LocalDate startDate;
     public LocalDate endDate;
-    public int travellerCount;
-    public double budget;
+    public Integer travellerCount;
+    public Double budget;
     public List<String> keywords;
 }

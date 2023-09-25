@@ -1,7 +1,13 @@
 openai:
   endpoint: "https://api.openai.com/v1/chat/completions"
-  # get the key from GitHub secret
+  # set the key from Azure Web Apps configuration
   key: ${OPENAI_KEY}
+  retry: 3
+
+azure:
+  endpoint: "https://gpt-demo.openai.azure.com/openai/deployments/heyssiontest/chat/completions?api-version=2023-07-01-preview"
+  # set the key from Azure Web Apps configuration
+  key: ${AZURE_KEY}
   retry: 3
 
 prompt:
