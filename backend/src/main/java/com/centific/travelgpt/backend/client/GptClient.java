@@ -1,8 +1,10 @@
 package com.centific.travelgpt.backend.client;
 
 import com.centific.travelgpt.backend.entity.GptProvider;
-import com.centific.travelgpt.backend.entity.openai.Choice;
-import com.centific.travelgpt.backend.entity.openai.Message;
+import com.centific.travelgpt.backend.entity.azureopenai.AzureOpenAiRequest;
+import com.centific.travelgpt.backend.entity.azureopenai.AzureOpenAiResponse;
+import com.centific.travelgpt.backend.entity.azureopenai.Choice;
+import com.centific.travelgpt.backend.entity.azureopenai.Message;
 import com.centific.travelgpt.backend.entity.openai.OpenAiRequest;
 import com.centific.travelgpt.backend.entity.openai.OpenAiResponse;
 import lombok.extern.slf4j.Slf4j;
@@ -33,11 +35,20 @@ public class GptClient {
     @Value("${openai.retry}")
     private int openAiRetry;
 
+    @Value("${azure.endpoint}")
+    private String azureEndpoint;
+
+    @Value("${azure.key}")
+    private String azureKey;
+
+    @Value("${azure.retry}")
+    private int azureRetry;
+
     private final WebClient webClient = WebClient.builder().build();
 
     public Mono<String> callGpt(String prompt) {
         String gptProvider = System.getenv("GPT_PROVIDER");
-        if (GptProvider.AZURE.value.equals(gptProvider)) {
+        if (GptProvider.AZURE.value.equalsIgnoreCase(gptProvider)) {
             return callAzure(prompt);
         } else {
             return callOpenAi(prompt);
@@ -62,14 +73,38 @@ public class GptClient {
                 .bodyToMono(OpenAiResponse.class)
                 .map(openAiResponse -> {
                     log.info("OpenAI call succeeded with response: {}", openAiResponse);
-                    List<Choice> choices = openAiResponse.getChoices();
+                    List<com.centific.travelgpt.backend.entity.openai.Choice> choices = openAiResponse.getChoices();
                     return choices.get(0).getMessage().getContent();
                 })
                 .retry(openAiRetry);
     }
 
+    private Mono<String> callAzure(String prompt) {
+        AzureOpenAiRequest azureOpenAiRequest = buildAzureOpenAiRequest(prompt);
+        log.info("Calling Azure OpenAI with request: {}", azureOpenAiRequest);
+        return webClient.post()
+                .uri(azureEndpoint)
+                .contentType(MediaType.APPLICATION_JSON)
+                .bodyValue(azureOpenAiRequest)
+                .header("api-key", azureKey)
+                .retrieve()
+                .onStatus(httpStatus -> !httpStatus.is2xxSuccessful(), clientResponse ->
+                        clientResponse.bodyToMono(String.class)
+                                .flatMap(errorBody -> {
+                                    log.error("Azure OpenAI call failed with status: {}, error body: {}", clientResponse.statusCode(), errorBody);
+                                    return Mono.error(new RuntimeException("Azure OpenAI call failed"));
+                                }))
+                .bodyToMono(AzureOpenAiResponse.class)
+                .map(azureOpenAiResponse -> {
+                    log.info("Azure OpenAI call succeeded with response: {}", azureOpenAiResponse);
+                    List<Choice> choices = azureOpenAiResponse.getChoices();
+                    return choices.get(0).getMessage().getContent();
+                })
+                .retry(azureRetry);
+    }
+
     private OpenAiRequest buildOpenAiRequest(String prompt) {
-        Message message = new Message();
+        com.centific.travelgpt.backend.entity.openai.Message message = new com.centific.travelgpt.backend.entity.openai.Message();
         message.setRole("user");
         message.setContent(prompt);
         return OpenAiRequest.builder()
@@ -78,8 +113,12 @@ public class GptClient {
                 .build();
     }
 
-    private Mono<String> callAzure(String prompt) {
-        // TODO: 2023/9/20 in case we could use Azure
-        return null;
+    private AzureOpenAiRequest buildAzureOpenAiRequest(String prompt) {
+        Message message = new Message();
+        message.setRole("user");
+        message.setContent(prompt);
+        return AzureOpenAiRequest.builder()
+                .messages(List.of(message))
+                .build();
     }
 }
