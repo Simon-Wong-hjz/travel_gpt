@@ -15,14 +15,12 @@ npm_start {
     args = ['start']
 }
 
-npm_deploy {
-    args = ['run', 'deploy']
-}
-
-npm_build {
+tasks.register('npm_build', NpmTask) {
+    dependsOn npmInstall
     args = ['run', 'build']
 }
 
 npm_test {
+    dependsOn npmInstall
     args = ['test']
 }
