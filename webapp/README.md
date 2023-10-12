@@ -2,15 +2,11 @@
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+The app is deployed to GitHub Pages on https://simon-wong-hjz.github.io/travel_gpt/.
+
 ## Available Scripts
 
 In the project directory, you can run:
-
-### `npm run deploy`
-
-Deploy the app to GitHub Pages on https://simon-wong-hjz.github.io/travel_gpt/.
-
-If you are using IDEA and gradle, you can run npm_deploy task in IDEA gradle panel.
 
 ### `npm start`
 
