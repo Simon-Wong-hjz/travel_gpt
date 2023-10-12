@@ -1,0 +1,74 @@
+name: Build and Publish APK
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: mobileapp
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Release name and version
+        run: |
+          echo ${{ github.ref }}
+          echo "RELEASE_VERSION=${GITHUB_REF#refs/tags/v}" >> "$GITHUB_ENV"
+          echo "$RELEASE_VERSION"
+
+      - name: Set up Java
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.13.3'
+          channel: 'stable'
+
+      - name: Build APK
+        run: flutter build apk --release --split-per-abi --no-shrink
+
+      - name: Rename APKs
+        run: |
+          mv build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk build/app/outputs/flutter-apk/travelgpt-armeabi-v7a-$RELEASE_VERSION.apk
+          mv build/app/outputs/flutter-apk/app-arm64-v8a-release.apk build/app/outputs/flutter-apk/travelgpt-arm64-v8a-$RELEASE_VERSION.apk
+          mv build/app/outputs/flutter-apk/app-x86_64-release.apk build/app/outputs/flutter-apk/travelgpt-x86_64-$RELEASE_VERSION.apk
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v3
+        with:
+          name: apk
+          # the upload-artifact does not use working-directory
+          path: mobileapp/build/app/outputs/flutter-apk/*.apk
+          if-no-files-found: error
+
+  release:
+    name: Release APK
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download APK from build
+        uses: actions/download-artifact@v3
+        with:
+          name: apk
+      - name: Display structure of downloaded files
+        run: ls -R
+
+      - name: Create Release
+        id: create_release
+        uses: ncipollo/release-action@v1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          artifacts: '*.apk'

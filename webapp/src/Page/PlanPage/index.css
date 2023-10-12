@@ -9,6 +9,23 @@
   min-height: 100vh;
 }
 
+.plan a {
+  text-decoration: none;
+}
+
+.plan h3 {
+  color: #555;
+  width: 1030px;
+  margin: auto;
+}
+
+.plan .feedback_link{
+  display:block;
+  width: 1030px;
+  margin: auto;
+  font-size: 20px;
+}
+
 .plan-content {
   width: 1030px;
   margin: auto;
@@ -17,4 +34,8 @@
 table {
   text-align: center;
   white-space: pre-line;
+}
+
+.back_home {
+  margin: 20px 0 20px 245px;
 }

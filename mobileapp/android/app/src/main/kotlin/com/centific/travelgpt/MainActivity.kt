@@ -1,4 +1,4 @@
-package com.example.travel_gpt
+package com.centific.travelgpt
 
 import io.flutter.embedding.android.FlutterActivity
 
