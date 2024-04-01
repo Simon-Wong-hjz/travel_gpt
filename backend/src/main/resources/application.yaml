@@ -5,7 +5,7 @@ openai:
   retry: 3
 
 azure:
-  endpoint: "https://gpt-demo.openai.azure.com/openai/deployments/heyssiontest/chat/completions?api-version=2023-07-01-preview"
+  endpoint: "https://centific-gpt-32k.openai.azure.com/openai/deployments/ResumeModel/chat/completions?api-version=2024-02-15-preview"
   # set the key from Azure Web Apps configuration
   key: ${AZURE_KEY}
   retry: 3
