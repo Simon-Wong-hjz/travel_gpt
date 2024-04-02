@@ -8,6 +8,11 @@ const routers = [
     component: Home,
   },
   {
+    title: 'Home',
+    path: '/home',
+    component: Home,
+  },
+  {
     title: 'Plan',
     path: '/plan',
     component: Plan,

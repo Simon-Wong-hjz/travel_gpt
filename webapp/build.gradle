@@ -1,0 +1,26 @@
+// webapp build.gradle
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+
+    group = 'com.centific.travelgpt'
+}
+
+plugins {
+    id "com.github.node-gradle.node" version "7.0.1"
+}
+
+npm_start {
+    args = ['start']
+}
+
+tasks.register('npm_build', NpmTask) {
+    dependsOn npmInstall
+    args = ['run', 'build']
+}
+
+npm_test {
+    dependsOn npmInstall
+    args = ['test']
+}
